@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>নিউজ এবং ব্লগস - বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড - রিয়েল এস্টেট সম্পর্কিত সর্বশেষ খবর, প্রবন্ধ এবং কোম্পানি আপডেট।">
+  <meta name="keywords" content="বসতবাড়ি ব্লগ, পূর্বাচল খবর, জমি ক্রয় খবর, রিয়েল এস্টেট টিপস">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://bashatbari.com/wp-content/uploads/2025/09/cropped-bashatbari-logo-32x32.png" sizes="32x32">
+  
+  <!-- FontAwesome & Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  
+  <style>
+    /* Blogs Custom Page Layout */
+    .banner-blogs {
+      height: 40vh;
+      background: linear-gradient(180deg, rgba(0, 92, 50, 0.45) 0%, rgba(29, 41, 57, 0.8) 100%), 
+                  url('https://bashatbari.com/wp-content/uploads/2025/07/bashatbari-post-1.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-white);
+      text-align: center;
+    }
+    
+    .banner-blogs h1 {
+      font-size: 2.8rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    
+    .search-filter-section {
+      background-color: var(--bg-white);
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .search-filter-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .search-box {
+      position: relative;
+      max-width: 400px;
+      width: 100%;
+    }
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 20px 12px 45px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      font-family: var(--font-bengali);
+      font-size: 0.95rem;
+      transition: var(--transition-fast);
+    }
+    
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(0, 92, 50, 0.1);
+    }
+    
+    .search-box i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+    
+    .tag-filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    /* Blogs Card styles */
+    .blog-card {
+      background-color: var(--bg-white);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      transition: var(--transition-slow);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(0, 92, 50, 0.15);
+    }
+    
+    .blog-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      transition: var(--transition-slow);
+    }
+    
+    .blog-card:hover img {
+      transform: scale(1.04);
+    }
+    
+    .blog-body {
+      padding: 24px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .blog-meta-top {
+      display: flex;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-family: var(--font-english);
+    }
+    
+    .blog-meta-top span i {
+      color: var(--primary-color);
+      margin-right: 4px;
+    }
+    
+    .blog-card-title {
+      font-size: 1.2rem;
+      line-height: 1.4;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      height: 2.8em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    
+    .blog-excerpt {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      height: 4.8em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    
+    .blog-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: auto;
+      margin-bottom: 16px;
+    }
+    
+    .blog-tag {
+      background-color: var(--bg-light);
+      color: var(--primary-color);
+      font-size: 0.8rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    
+    /* Article Modal */
+    .article-body-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #333;
+      text-align: justify;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navbar with Glassmorphic Pill Shape -->
+  <header id="header" class="header scrolled">
+    <div class="container">
+      <div class="nav-pill">
+        <a href="/" class="logo">
+          <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+        </a>
+        
+        <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle Navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-menu" id="nav-menu">
+          <li class="nav-item"><a href="/" class="nav-link">হোম</a></li>
+          <li class="nav-item"><a href="/#about" class="nav-link">আমাদের সম্পর্কে</a></li>
+          <li class="nav-item"><a href="/#projects" class="nav-link">চলমান প্রজেক্ট</a></li>
+          <li class="nav-item"><a href="/blogs.html" class="nav-link" style="color: var(--accent-gold);">নিউজ এবং ব্লগস</a></li>
+          <li class="nav-item"><a href="/career.html" class="nav-link">ক্যারিয়ার</a></li>
+          <li class="nav-item"><a href="/#contact" class="nav-link">যোগাযোগ</a></li>
+          <li class="nav-item"><a href="/admin.html" class="nav-link eng-text" style="color: var(--accent-gold); font-weight:600;"><i class="fas fa-user-shield"></i> Portal</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="banner-blogs">
+    <div>
+      <h1>নিউজ এবং ব্লগস</h1>
+      <p style="margin-top: 10px; font-size: 1.1rem; opacity:0.9;">বসতবাড়ি পূর্বাচল প্রকল্পের নিয়মিত খবর এবং আবাসন প্রবন্ধ</p>
+    </div>
+  </section>
+
+  <!-- Search & Filter Bar -->
+  <section class="search-filter-section">
+    <div class="container search-filter-flex">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="blog-search" class="search-input" placeholder="আর্টিকেল খুঁজুন...">
+      </div>
+      
+      <div class="tag-filters" id="tag-filters">
+        <button class="filter-btn active" data-tag="all">সকল ক্যাটাগরি</button>
+        <!-- Filter tags populated dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="section">
+    <div class="container">
+      <div class="properties-grid" id="blogs-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+        <p> আধুনিক ও যুগোপযোগী পরিকল্পিত নগরী গড়ার মহা পরিকল্পনায় nature, technology, security এবং luxury-র সমন্বয়ে গড়ে উঠেছে বসতবাড়ি পূর্বাচল।</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/bibiyahousingltd" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>কোম্পানি লিংকস</h3>
+        <ul class="footer-links">
+          <li><a href="/#about">আমাদের সম্পর্কে</a></li>
+          <li><a href="/#projects">চলমান প্রজেক্ট</a></li>
+          <li><a href="/blogs.html">নিউজ এবং ব্লগস</a></li>
+          <li><a href="/career.html">ক্যারিয়ার</a></li>
+          <li><a href="/#contact">যোগাযোগ করুন</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>কাস্টমার সার্ভিসেস</h3>
+        <ul class="footer-contact-info">
+          <li>
+            <i class="fas fa-headset"></i>
+            <span>হটলাইন: +8801962191919</span>
+          </li>
+          <li>
+            <i class="fas fa-envelope-open"></i>
+            <span>ইমেইল: info@bashatbari.com</span>
+          </li>
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>নিকুঞ্জ-১, খিলক্ষেত, ঢাকা-১২২৯</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>কপিরাইট © 2026 বসতবাড়ি পূর্বাচল সিটি ডেভেলপমেন্ট লিমিটেড | সমস্ত অধিকার সংরক্ষিত</p>
+    </div>
+  </footer>
+
+  <!-- Blog Details Modal -->
+  <div id="blog-modal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+      <button class="modal-close" id="blog-modal-close" aria-label="Close modal"><i class="fas fa-times"></i></button>
+      <div class="modal-banner" style="height: 350px;">
+        <img id="modal-blog-img" src="" alt="Blog Banner">
+      </div>
+      <div class="modal-body">
+        <div class="blog-meta-top" style="margin-bottom: 8px;">
+          <span id="modal-blog-date"></span>
+          <span id="modal-blog-author"></span>
+        </div>
+        <h2 id="modal-blog-title" style="color: var(--primary-color); font-size: 1.8rem; line-height: 1.3; margin-bottom: 12px;"></h2>
+        
+        <div class="blog-tags" id="modal-blog-tags" style="margin-bottom: 20px;"></div>
+        
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 20px;">
+        
+        <div class="article-body-text" id="modal-blog-content">
+          <!-- Text dynamically loaded -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let blogs = [];
+      
+      const blogsGrid = document.getElementById('blogs-grid');
+      const searchInput = document.getElementById('blog-search');
+      const tagFiltersContainer = document.getElementById('tag-filters');
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const navMenu = document.getElementById('nav-menu');
+      
+      // Modal DOM
+      const blogModal = document.getElementById('blog-modal');
+      const modalClose = document.getElementById('blog-modal-close');
+      const mImg = document.getElementById('modal-blog-img');
+      const mDate = document.getElementById('modal-blog-date');
+      const mAuthor = document.getElementById('modal-blog-author');
+      const mTitle = document.getElementById('modal-blog-title');
+      const mTags = document.getElementById('modal-blog-tags');
+      const mContent = document.getElementById('modal-blog-content');
+
+      // Mobile navbar
+      if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+        });
+      }
+
+      // Fetch Blogs from API
+      async function fetchBlogs() {
+        try {
+          blogsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--primary-color);">লোড হচ্ছে...</div>';
+          const response = await fetch('/api/blogs');
+          if (!response.ok) throw new Error('Failed to load blogs');
+          blogs = await response.json();
+          
+          renderBlogs(blogs);
+          renderTagFilters(blogs);
+        } catch (err) {
+          console.error(err);
+          blogsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #EF4444;">আর্টিকেল লোড করতে সমস্যা হয়েছে।</div>';
+        }
+      }
+
+      // Render Grid Cards
+      function renderBlogs(list) {
+        if (list.length === 0) {
+          blogsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">কোনো আর্টিকেল পাওয়া যায়নি।</div>';
+          return;
+        }
+
+        blogsGrid.innerHTML = list.map(blog => {
+          const dateStr = new Date(blog.createdAt).toLocaleDateString('bn-BD', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+
+          const tagsHTML = (blog.tags || []).map(t => `<span class="blog-tag">${t}</span>`).join('');
+          
+          return `
+            <div class="blog-card" style="cursor: pointer;" onclick="window.openBlog('${blog._id || blog.id}')">
+              <img src="${blog.image}" alt="${blog.title}">
+              <div class="blog-body">
+                <div class="blog-meta-top">
+                  <span><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+                  <span><i class="far fa-user"></i> ${blog.author || 'Admin'}</span>
+                </div>
+                <h3 class="blog-card-title">${blog.title}</h3>
+                <p class="blog-excerpt">${blog.content}</p>
+                <div class="blog-tags">
+                  ${tagsHTML}
+                </div>
+                <button class="btn btn-outline" style="border-color:var(--primary-color); color:var(--primary-color); padding: 8px 20px; font-size: 0.9rem; align-self: flex-start; margin-top: auto;">পড়ুন <i class="fas fa-arrow-right" style="margin-left: 6px; font-size:0.8rem;"></i></button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Dynamic Render Filter Buttons from unique tags
+      function renderTagFilters(list) {
+        const allTags = new Set();
+        list.forEach(blog => {
+          if (blog.tags) blog.tags.forEach(t => allTags.add(t));
+        });
+
+        tagFiltersContainer.innerHTML = '<button class="filter-btn active" data-tag="all">সকল ক্যাটাগরি</button>' + 
+          [...allTags].map(tag => `<button class="filter-btn" data-tag="${tag}">${tag}</button>`).join('');
+
+        // Re-attach tag listeners
+        const filters = tagFiltersContainer.querySelectorAll('.filter-btn');
+        filters.forEach(btn => {
+          btn.addEventListener('click', () => {
+            filters.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            filterBlogs();
+          });
+        });
+      }
+
+      // Filter and Search logic
+      function filterBlogs() {
+        const searchText = searchInput.value.trim().toLowerCase();
+        const activeFilterBtn = tagFiltersContainer.querySelector('.filter-btn.active');
+        const selectedTag = activeFilterBtn ? activeFilterBtn.getAttribute('data-tag') : 'all';
+
+        let filtered = blogs;
+
+        // Apply Tag filter
+        if (selectedTag !== 'all') {
+          filtered = filtered.filter(b => b.tags && b.tags.includes(selectedTag));
+        }
+
+        // Apply Search filter
+        if (searchText) {
+          filtered = filtered.filter(b => 
+            (b.title && b.title.toLowerCase().includes(searchText)) || 
+            (b.content && b.content.toLowerCase().includes(searchText))
+          );
+        }
+
+        renderBlogs(filtered);
+      }
+
+      // Bind search input
+      if (searchInput) {
+        searchInput.addEventListener('input', filterBlogs);
+      }
+
+      // Modal management
+      window.openBlog = function(id) {
+        const blog = blogs.find(b => b._id === id || b.id === id);
+        if (!blog) return;
+
+        mImg.src = blog.image;
+        mDate.innerHTML = `<i class="far fa-calendar-alt"></i> ` + new Date(blog.createdAt).toLocaleDateString('bn-BD', {
+          year: 'numeric', month: 'long', day: 'numeric'
+        });
+        mAuthor.innerHTML = `<i class="far fa-user"></i> ` + (blog.author || 'Admin');
+        mTitle.textContent = blog.title;
+        mTags.innerHTML = (blog.tags || []).map(t => `<span class="blog-tag">${t}</span>`).join('');
+        mContent.textContent = blog.content;
+
+        blogModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeBlogModal() {
+        blogModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (modalClose) modalClose.addEventListener('click', closeBlogModal);
+      if (blogModal) {
+        blogModal.addEventListener('click', (e) => {
+          if (e.target === blogModal) closeBlogModal();
+        });
+      }
+
+      fetchBlogs();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ক্যারিয়ার - বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড - আমাদের টিমে যোগ দিন এবং আপনার পেশাদার ক্যারিয়ার গড়ুন। নতুন জবের সার্কুলার ও সিভি জমাদান।">
+  <meta name="keywords" content="বসতবাড়ি ক্যারিয়ার, পূর্বাচল জব সার্কুলার, রিয়েল এস্টেট চাকরি, সিভি সাবমিট">
+  
+  <!-- Favicon -->
+  <link class="favicon" rel="icon" href="https://bashatbari.com/wp-content/uploads/2025/09/cropped-bashatbari-logo-32x32.png" sizes="32x32">
+  
+  <!-- FontAwesome & Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  
+  <style>
+    /* Career Custom Page Layout */
+    .banner-career {
+      height: 40vh;
+      background: linear-gradient(180deg, rgba(0, 92, 50, 0.45) 0%, rgba(29, 41, 57, 0.8) 100%), 
+                  url('https://bashatbari.com/wp-content/uploads/2025/09/blog-2.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-white);
+      text-align: center;
+    }
+    
+    .banner-career h1 {
+      font-size: 2.8rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .career-intro {
+      max-width: 800px;
+      margin: 0 auto 50px auto;
+      text-align: center;
+    }
+
+    .career-intro p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Accordion Styles */
+    .jobs-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .job-item {
+      background-color: var(--bg-white);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition-normal);
+    }
+
+    .job-item:hover {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(0, 92, 50, 0.15);
+    }
+
+    .job-header {
+      padding: 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      background-color: var(--bg-white);
+      transition: var(--transition-fast);
+    }
+
+    .job-header:hover {
+      background-color: rgba(0, 92, 50, 0.02);
+    }
+
+    .job-header-left h3 {
+      font-size: 1.3rem;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+    }
+
+    .job-meta-row {
+      display: flex;
+      gap: 20px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .job-meta-row span i {
+      color: var(--accent-gold);
+      margin-right: 6px;
+    }
+
+    .job-toggle-icon {
+      font-size: 1.2rem;
+      color: var(--primary-color);
+      transition: transform 0.3s ease;
+    }
+
+    .job-item.active .job-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .job-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+      border-top: 0 solid var(--border-color);
+      background-color: #FAFBFD;
+    }
+
+    .job-item.active .job-content {
+      max-height: 1000px; /* high value to transition to auto */
+      border-top: 1px solid var(--border-color);
+    }
+
+    .job-body {
+      padding: 30px;
+    }
+
+    .job-section-title {
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .job-text {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+
+    /* Modal Form Overlay */
+    .apply-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(29, 41, 57, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition-normal);
+    }
+
+    .apply-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .apply-card {
+      background-color: var(--bg-white);
+      border-radius: var(--border-radius);
+      max-width: 600px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      transform: translateY(30px);
+      transition: var(--transition-normal);
+      padding: 35px;
+    }
+
+    .apply-overlay.active .apply-card {
+      transform: translateY(0);
+    }
+
+    .apply-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .apply-close:hover {
+      color: #EF4444;
+    }
+
+    .apply-card h2 {
+      font-size: 1.6rem;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+    }
+
+    .apply-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+      border: 2px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      background-color: #FAFBFD;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .file-upload-wrapper:hover {
+      border-color: var(--primary-color);
+      background-color: rgba(0, 92, 50, 0.02);
+    }
+
+    .file-upload-wrapper i {
+      font-size: 2.2rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .file-upload-wrapper input[type="file"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-info-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .file-name-selected {
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-top: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navbar -->
+  <header id="header" class="header scrolled">
+    <div class="container">
+      <div class="nav-pill">
+        <a href="/" class="logo">
+          <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+        </a>
+        
+        <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle Navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-menu" id="nav-menu">
+          <li class="nav-item"><a href="/" class="nav-link">হোম</a></li>
+          <li class="nav-item"><a href="/#about" class="nav-link">আমাদের সম্পর্কে</a></li>
+          <li class="nav-item"><a href="/#projects" class="nav-link">চলমান প্রজেক্ট</a></li>
+          <li class="nav-item"><a href="/blogs.html" class="nav-link">নিউজ এবং ব্লগস</a></li>
+          <li class="nav-item"><a href="/career.html" class="nav-link" style="color: var(--accent-gold);">ক্যারিয়ার</a></li>
+          <li class="nav-item"><a href="/#contact" class="nav-link">যোগাযোগ</a></li>
+          <li class="nav-item"><a href="/admin.html" class="nav-link eng-text" style="color: var(--accent-gold); font-weight:600;"><i class="fas fa-user-shield"></i> Portal</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="banner-career">
+    <div>
+      <h1>ক্যারিয়ার ও নিয়োগ</h1>
+      <p style="margin-top: 10px; font-size: 1.1rem; opacity:0.9;">বসতবাড়ি টিমে যুক্ত হয়ে রিয়েল এস্টেট খাতে একটি সম্ভাবনাময় ক্যারিয়ার গড়ুন</p>
+    </div>
+  </section>
+
+  <!-- Career Content Section -->
+  <section class="section">
+    <div class="container">
+      
+      <div class="career-intro">
+        <span class="section-subtitle">JOIN OUR TEAM</span>
+        <h2>বসতবাড়ি টিমে যোগ দিন</h2>
+        <div style="width: 60px; height: 4px; background-color: var(--accent-gold); margin: 12px auto 25px; border-radius: 2px;"></div>
+        <p>আমরা বিশ্বাস করি দক্ষ এবং পরিশ্রমী কর্মীবাহিনীই একটি প্রতিষ্ঠানের সফলতার চালিকাশক্তি। বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড-এর একটি গতিশীল এবং সহযোগী পরিবেশে আপনার প্রতিভা প্রদর্শনের জন্য আপনি আমন্ত্রিত। নিচে আমাদের বর্তমান শূন্য পদের তালিকা দেওয়া রয়েছে। আগ্রহী পদের বিবরণ দেখে আবেদন করুন।</p>
+      </div>
+
+      <!-- Job List Accordion Container -->
+      <div class="jobs-container" id="jobs-accordion">
+        <!-- Will be loaded dynamically -->
+        <div style="text-align: center; padding: 40px; color: var(--primary-color);">লোড হচ্ছে...</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+        <p> আধুনিক ও যুগোপযোগী পরিকল্পিত নগরী গড়ার মহা পরিকল্পনায় nature, technology, security এবং luxury-র সমন্বয়ে গড়ে উঠেছে বসতবাড়ি পূর্বাচল।</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/bibiyahousingltd" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>কোম্পানি লিংকস</h3>
+        <ul class="footer-links">
+          <li><a href="/#about">আমাদের সম্পর্কে</a></li>
+          <li><a href="/#projects">চলমান প্রজেক্ট</a></li>
+          <li><a href="/blogs.html">নিউজ এবং ব্লগস</a></li>
+          <li><a href="/career.html">ক্যারিয়ার</a></li>
+          <li><a href="/#contact">যোগাযোগ করুন</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>কাস্টমার সার্ভিসেস</h3>
+        <ul class="footer-contact-info">
+          <li>
+            <i class="fas fa-headset"></i>
+            <span>হটলাইন: +8801962191919</span>
+          </li>
+          <li>
+            <i class="fas fa-envelope-open"></i>
+            <span>ইমেইল: info@bashatbari.com</span>
+          </li>
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>নিকুঞ্জ-১, খিলক্ষেত, ঢাকা-১২২৯</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>কপিরাইট © 2026 বসতবাড়ি পূর্বাচল সিটি ডেভেলপমেন্ট লিমিটেড | সমস্ত অধিকার সংরক্ষিত</p>
+    </div>
+  </footer>
+
+  <!-- CV Submission Modal / Form Overlay -->
+  <div id="apply-overlay" class="apply-overlay">
+    <div class="apply-card">
+      <button class="apply-close" id="apply-close-btn" aria-label="Close form"><i class="fas fa-times"></i></button>
+      
+      <h2>আবেদন ফর্ম</h2>
+      <p>নিচের বক্সে আপনার সঠিক তথ্য দিয়ে আবেদন করুন এবং সিভি আপলোড করুন।</p>
+
+      <div id="form-message" class="form-alert"></div>
+
+      <form id="application-form" enctype="multipart/form-data">
+        <input type="hidden" id="apply-job-id" name="jobId">
+        
+        <div class="form-group">
+          <label for="apply-job-title">আবেদনকৃত পদ</label>
+          <input type="text" id="apply-job-title" class="form-control" style="background-color: var(--bg-light); cursor: not-allowed;" readonly>
+        </div>
+
+        <div class="form-group">
+          <label for="applicant-name">পূর্ণ নাম (Full Name) *</label>
+          <input type="text" id="applicant-name" name="name" class="form-control" placeholder="আপনার সম্পূর্ণ নাম লিখুন" required>
+        </div>
+
+        <div class="form-group">
+          <label for="applicant-email">ইমেইল এড্রেস (Email Address) *</label>
+          <input type="email" id="applicant-email" name="email" class="form-control" placeholder="আপনার ইমেইল এড্রেস লিখুন" required>
+        </div>
+
+        <div class="form-group">
+          <label for="applicant-phone">মোবাইল নম্বর (Mobile Number) *</label>
+          <input type="tel" id="applicant-phone" name="phone" class="form-control" placeholder="যেমন: 017XXXXXXXX" required>
+        </div>
+
+        <div class="form-group">
+          <label for="applicant-cover">কভার লেটার / অতিরিক্ত তথ্য (Cover Letter)</label>
+          <textarea id="applicant-cover" name="coverLetter" class="form-control" rows="4" placeholder="আপনার কাজের যোগ্যতা বা অন্যান্য কোনো তথ্য জানাতে চাইলে লিখুন..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>আপনার সিভি / রেজুমে আপলোড করুন (Resume / CV) *</label>
+          <div class="file-upload-wrapper" id="dropzone">
+            <i class="far fa-file-pdf"></i>
+            <p style="font-weight: 500; margin-bottom: 2px;">সিভি ফাইল এখানে ড্রপ করুন অথবা ব্রাউজ করুন</p>
+            <span class="file-info-text">সমর্থিত ফরম্যাট: PDF, DOC, DOCX (সর্বোচ্চ ৫ মেগাবাইট)</span>
+            <input type="file" id="applicant-resume" name="resume" accept=".pdf,.doc,.docx" required>
+            <div class="file-name-selected" id="file-selected-display"></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: right;">
+          <button type="submit" class="btn btn-primary" id="apply-submit-btn" style="padding: 12px 35px;">আবেদনপত্র জমা দিন <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Client JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const jobsAccordion = document.getElementById('jobs-accordion');
+      const applyOverlay = document.getElementById('apply-overlay');
+      const applyCloseBtn = document.getElementById('apply-close-btn');
+      const applicationForm = document.getElementById('application-form');
+      const formMessage = document.getElementById('form-message');
+      
+      const fileInput = document.getElementById('applicant-resume');
+      const dropzone = document.getElementById('dropzone');
+      const fileSelectedDisplay = document.getElementById('file-selected-display');
+      
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const navMenu = document.getElementById('nav-menu');
+
+      // Mobile navbar
+      if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+        });
+      }
+
+      // File Input Change Display
+      if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+          if (e.target.files.length > 0) {
+            const file = e.target.files[0];
+            fileSelectedDisplay.textContent = `নির্বাচিত ফাইল: ${file.name} (${(file.size / (1024*1024)).toFixed(2)} MB)`;
+            fileSelectedDisplay.style.display = 'block';
+          } else {
+            fileSelectedDisplay.style.display = 'none';
+          }
+        });
+      }
+
+      // Fetch Active Jobs
+      async function fetchJobs() {
+        try {
+          const response = await fetch('/api/jobs?active=true');
+          if (!response.ok) throw new Error('Failed to load jobs');
+          const jobs = await response.json();
+          renderJobs(jobs);
+        } catch (err) {
+          console.error(err);
+          jobsAccordion.innerHTML = '<div style="text-align: center; padding: 40px; color: #EF4444;">নিয়োগ বিজ্ঞপ্তি লোড করতে সমস্যা হয়েছে। দয়া করে পরবর্তীতে চেষ্টা করুন।</div>';
+        }
+      }
+
+      // Render Job listings
+      function renderJobs(list) {
+        if (list.length === 0) {
+          jobsAccordion.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted); border: 1px solid var(--border-color); border-radius: var(--border-radius); background-color: var(--bg-white);">বর্তমানে কোনো সক্রিয় নিয়োগ বিজ্ঞপ্তি নেই। নিয়মিত নজর রাখুন!</div>';
+          return;
+        }
+
+        jobsAccordion.innerHTML = list.map(job => {
+          const deadlineText = job.deadline;
+          
+          return `
+            <div class="job-item" data-id="${job._id || job.id}">
+              <div class="job-header" onclick="toggleAccordion('${job._id || job.id}')">
+                <div class="job-header-left">
+                  <h3>${job.title}</h3>
+                  <div class="job-meta-row">
+                    <span><i class="fas fa-briefcase"></i> ${job.department}</span>
+                    <span><i class="fas fa-map-marker-alt"></i> ${job.location || 'Nikunja, Dhaka'}</span>
+                    <span><i class="far fa-calendar-alt"></i> আবেদনের শেষ তারিখ: ${deadlineText}</span>
+                  </div>
+                </div>
+                <div class="job-toggle-icon"><i class="fas fa-chevron-down"></i></div>
+              </div>
+              <div class="job-content">
+                <div class="job-body">
+                  <div class="job-section-title">পদের বিবরণ / কাজ (Job Description):</div>
+                  <div class="job-text">${job.description}</div>
+                  
+                  <div class="job-section-title">প্রয়োজনীয় যোগ্যতা ও শর্তাবলী (Requirements):</div>
+                  <div class="job-text">${job.requirements}</div>
+                  
+                  <div style="border-top: 1px solid var(--border-color); padding-top: 24px; text-align: right;">
+                    <button class="btn btn-primary" onclick="openApplyModal('${job._id || job.id}', '${job.title}')">আবেদন করুন <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Toggle Accordion Function
+      window.toggleAccordion = function(id) {
+        const jobItems = document.querySelectorAll('.job-item');
+        jobItems.forEach(item => {
+          const itemId = item.getAttribute('data-id');
+          if (itemId === id) {
+            item.classList.toggle('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      };
+
+      // Modal Open/Close
+      window.openApplyModal = function(jobId, jobTitle) {
+        document.getElementById('apply-job-id').value = jobId;
+        document.getElementById('apply-job-title').value = jobTitle;
+        formMessage.style.display = 'none';
+        applicationForm.reset();
+        fileSelectedDisplay.style.display = 'none';
+        
+        applyOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      function closeApplyModal() {
+        applyOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (applyCloseBtn) applyCloseBtn.addEventListener('click', closeApplyModal);
+      if (applyOverlay) {
+        applyOverlay.addEventListener('click', (e) => {
+          if (e.target === applyOverlay) closeApplyModal();
+        });
+      }
+
+      // Submit Application Form via AJAX
+      if (applicationForm) {
+        applicationForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          formMessage.style.display = 'none';
+          
+          const submitBtn = document.getElementById('apply-submit-btn');
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'আবেদন পাঠানো হচ্ছে... <i class="fas fa-spinner fa-spin" style="margin-left: 8px;"></i>';
+
+          const formData = new FormData(applicationForm);
+
+          try {
+            const response = await fetch('/api/applications', {
+              method: 'POST',
+              body: formData
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              formMessage.className = 'form-alert form-alert-success';
+              formMessage.innerHTML = '<i class="fas fa-check-circle" style="margin-right: 8px;"></i> আপনার আবেদনটি সফলভাবে জমা নেওয়া হয়েছে! আমাদের টিম শীঘ্রই যোগাযোগ করবে।';
+              formMessage.style.display = 'block';
+              applicationForm.reset();
+              fileSelectedDisplay.style.display = 'none';
+              
+              // Scroll to message
+              applyOverlay.querySelector('.apply-card').scrollTop = 0;
+
+              setTimeout(() => {
+                closeApplyModal();
+              }, 3000);
+            } else {
+              formMessage.className = 'form-alert form-alert-error';
+              formMessage.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i> ' + (data.message || 'আবেদন জমা দিতে সমস্যা হয়েছে।');
+              formMessage.style.display = 'block';
+              applyOverlay.querySelector('.apply-card').scrollTop = 0;
+            }
+          } catch (err) {
+            console.error(err);
+            formMessage.className = 'form-alert form-alert-error';
+            formMessage.innerHTML = '<i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i> সার্ভার যোগাযোগে ত্রুটি হয়েছে। দয়া করে আবার চেষ্টা করুন।';
+            formMessage.style.display = 'block';
+            applyOverlay.querySelector('.apply-card').scrollTop = 0;
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'আবেদনপত্র জমা দিন <i class="fas fa-paper-plane" style="margin-left: 8px;"></i>';
+          }
+        });
+      }
+
+      fetchJobs();
+    });
+  </script>
+</body>
+</html>

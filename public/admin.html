@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>অ্যাডমিন প্যানেল - বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://bashatbari.com/wp-content/uploads/2025/09/cropped-bashatbari-logo-32x32.png" sizes="32x32">
+  
+  <!-- FontAwesome & Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <!-- Glassmorphic Login Overlay -->
+  <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+      <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+      <h2>Admin Portal</h2>
+      <p>Enter credentials to access properties and leads</p>
+      
+      <div id="login-error" class="login-error"></div>
+
+      <form id="login-form">
+        <div class="login-form-group">
+          <label for="login-username">USERNAME</label>
+          <input type="text" id="login-username" class="login-input" placeholder="e.g. admin" required>
+        </div>
+        <div class="login-form-group">
+          <label for="login-password">PASSWORD</label>
+          <input type="password" id="login-password" class="login-input" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="login-btn">LOG IN</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dashboard Container -->
+  <div id="admin-container" class="admin-container" style="display: none;">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+      </div>
+      
+      <ul class="sidebar-menu">
+        <li class="sidebar-item active">
+          <a class="sidebar-link" data-tab="properties-tab">
+            <i class="fas fa-home"></i>
+            <span>প্লট লিস্টিং সমূহ</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" data-tab="leads-tab">
+            <i class="fas fa-users-cog"></i>
+            <span>গ্রাহক লিড / মেসেজ</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" data-tab="settings-tab">
+            <i class="fas fa-sliders-h"></i>
+            <span>সাইট সেটিংস</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" data-tab="blogs-tab">
+            <i class="fas fa-newspaper"></i>
+            <span>ব্লগ পোস্টসমূহ</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" data-tab="careers-tab">
+            <i class="fas fa-user-tie"></i>
+            <span>নিয়োগ ও আবেদন</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="logout-btn" style="border: none; background: none; width: 100%; text-align: left; color:#EF4444;">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>লগআউট করুন</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Panel -->
+    <main class="main-panel">
+      
+      <!-- Panel Header -->
+      <header class="panel-header">
+        <div>
+          <h1>ড্যাশবোর্ড ওভারভিউ</h1>
+          <p>প্লট ইনভেন্টরি ও কাস্টমার সম্পর্ক ব্যবস্থাপনা</p>
+        </div>
+        <div>
+          <a href="/" target="_blank" class="admin-btn" style="background-color: var(--admin-bg-dark); color: #FFF;">
+            <i class="fas fa-external-link-alt"></i> মূল সাইট দেখুন
+          </a>
+        </div>
+      </header>
+
+      <!-- Stats Grid -->
+      <section class="stats-grid">
+        <div class="stats-card">
+          <div class="stats-icon properties">
+            <i class="fas fa-map-marked-alt"></i>
+          </div>
+          <div class="stats-info">
+            <h3>মোট প্লট</h3>
+            <p id="stat-total-properties">0</p>
+          </div>
+        </div>
+
+        <div class="stats-card">
+          <div class="stats-icon leads">
+            <i class="fas fa-envelope-open-text"></i>
+          </div>
+          <div class="stats-info">
+            <h3>মোট আবেদন / লিড</h3>
+            <p id="stat-total-leads">0</p>
+          </div>
+        </div>
+
+        <div class="stats-card">
+          <div class="stats-icon active-leads">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stats-info">
+            <h3>নতুন বার্তা</h3>
+            <p id="stat-new-leads">0</p>
+          </div>
+        </div>
+
+        <div class="stats-card">
+          <div class="stats-icon sold">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </div>
+          <div class="stats-info">
+            <h3>বিক্রীত প্লট</h3>
+            <p id="stat-sold-properties">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab Content Area -->
+      <section class="dashboard-content">
+        
+        <!-- Properties Tab -->
+        <div id="properties-tab" class="tab-pane active">
+          <div class="tab-pane-header">
+            <h2>প্লট ইনভেন্টরি তালিকা</h2>
+            <button class="admin-btn admin-btn-primary" id="add-property-btn">
+              <i class="fas fa-plus"></i> নতুন প্লট যুক্ত করুন
+            </button>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>প্লটের শিরোনাম</th>
+                  <th>ব্লক</th>
+                  <th>আকার</th>
+                  <th>ফেস</th>
+                  <th>মূল্য (আনুমানিক)</th>
+                  <th>স্ট্যাটাস</th>
+                  <th>অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="properties-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Leads Tab -->
+        <div id="leads-tab" class="tab-pane">
+          <div class="tab-pane-header">
+            <h2>কাস্টমার লিড ও যোগাযোগ অনুরোধ</h2>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>গ্রাহকের নাম</th>
+                  <th>যোগাযোগ নম্বর ও ইমেইল</th>
+                  <th style="width: 30%;">গ্রাহকের বার্তা</th>
+                  <th>আগ্রহী প্লট</th>
+                  <th>তারিখ</th>
+                  <th>লিড স্ট্যাটাস</th>
+                </tr>
+              </thead>
+              <tbody id="leads-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Site Settings Tab -->
+        <div id="settings-tab" class="tab-pane">
+          <div class="tab-pane-header">
+            <h2>ওয়েবসাইট কন্টেন্ট সেটিংস (লেখা, ছবি ও ভিডিও পরিবর্তন)</h2>
+          </div>
+
+          <div id="settings-success" class="login-error" style="background-color: #D1FAE5; border-color: #A7F3D0; color: #065F46; padding: 12px; margin-bottom: 20px;"></div>
+
+          <form id="settings-form">
+            <h3 style="margin-bottom:15px; padding-bottom:8px; border-bottom:1px solid var(--admin-border); color:var(--admin-primary);">হিরো সেকশন (Hero Section)</h3>
+            <div class="admin-form-group">
+              <label for="set-hero-title">হিরো টাইটেল (Title) *</label>
+              <input type="text" id="set-hero-title" class="admin-form-control" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="set-hero-subtitle">হিরো সাবটাইটেল (Subtitle) *</label>
+              <input type="text" id="set-hero-subtitle" class="admin-form-control" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="set-hero-video">হিরো ব্যাকগ্রাউন্ড ভিডিও লিংক (YouTube URL) *</label>
+              <input type="url" id="set-hero-video" class="admin-form-control" required>
+            </div>
+
+            <h3 style="margin-top:30px; margin-bottom:15px; padding-bottom:8px; border-bottom:1px solid var(--admin-border); color:var(--admin-primary);">আমাদের সম্পর্কে (About Us)</h3>
+            <div class="admin-form-group">
+              <label for="set-about-title">সেকশন টাইটেল *</label>
+              <input type="text" id="set-about-title" class="admin-form-control" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="set-about-text1">বিবরণ প্যারাগ্রাফ ১ *</label>
+              <textarea id="set-about-text1" class="admin-form-control" rows="4" required></textarea>
+            </div>
+            <div class="admin-form-group">
+              <label for="set-about-text2">বিবরণ প্যারাগ্রাফ ২ *</label>
+              <textarea id="set-about-text2" class="admin-form-control" rows="4" required></textarea>
+            </div>
+            <div class="admin-form-group">
+              <label for="set-about-image">ডানপাশের ছবি (Image URL) *</label>
+              <input type="url" id="set-about-image" class="admin-form-control" required>
+            </div>
+
+            <h3 style="margin-top:30px; margin-bottom:15px; padding-bottom:8px; border-bottom:1px solid var(--admin-border); color:var(--admin-primary);">ভিডিও ও মিডিয়া সেকশন (Media Gallery)</h3>
+            <div class="admin-form-row">
+              <div class="admin-form-group">
+                <label for="set-media1-title">ভিডিও ১ টাইটেল *</label>
+                <input type="text" id="set-media1-title" class="admin-form-control" required>
+              </div>
+              <div class="admin-form-group">
+                <label for="set-media1-url">ভিডিও ১ লিংক (YouTube URL) *</label>
+                <input type="url" id="set-media1-url" class="admin-form-control" required>
+              </div>
+            </div>
+            <div class="admin-form-row">
+              <div class="admin-form-group">
+                <label for="set-media2-title">ভিডিও ২ টাইটেল *</label>
+                <input type="text" id="set-media2-title" class="admin-form-control" required>
+              </div>
+              <div class="admin-form-group">
+                <label for="set-media2-url">ভিডিও ২ লিংক (YouTube URL) *</label>
+                <input type="url" id="set-media2-url" class="admin-form-control" required>
+              </div>
+            </div>
+
+            <h3 style="margin-top:30px; margin-bottom:15px; padding-bottom:8px; border-bottom:1px solid var(--admin-border); color:var(--admin-primary);">যোগাযোগের তথ্য (Contact Information)</h3>
+            <div class="admin-form-group">
+              <label for="set-contact-address">কর্পোরেট ঠিকানা *</label>
+              <input type="text" id="set-contact-address" class="admin-form-control" required>
+            </div>
+            <div class="admin-form-row">
+              <div class="admin-form-group">
+                <label for="set-contact-phone">যোগাযোগ নম্বর *</label>
+                <input type="text" id="set-contact-phone" class="admin-form-control" required>
+              </div>
+              <div class="admin-form-group">
+                <label for="set-contact-email">ইমেইল এড্রেস *</label>
+                <input type="email" id="set-contact-email" class="admin-form-control" required>
+              </div>
+            </div>
+            <div class="admin-form-group">
+              <label for="set-contact-hours">অফিস সময় *</label>
+              <input type="text" id="set-contact-hours" class="admin-form-control" required>
+            </div>
+
+            <div style="margin-top: 30px; text-align: right;">
+              <button type="submit" class="admin-btn admin-btn-primary" style="padding:10px 30px; font-size:1rem;">
+                <i class="fas fa-save"></i> সেটিংস সংরক্ষণ করুন
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Blogs Tab -->
+        <div id="blogs-tab" class="tab-pane">
+          <div class="tab-pane-header">
+            <h2>ব্লগ পোস্টসমূহ</h2>
+            <button class="admin-btn admin-btn-primary" id="add-blog-btn">
+              <i class="fas fa-plus"></i> নতুন ব্লগ পোস্ট লিখুন
+            </button>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ব্লগ টাইটেল</th>
+                  <th>লেখক</th>
+                  <th>ট্যাগসমূহ</th>
+                  <th>প্রকাশের তারিখ</th>
+                  <th>অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="blogs-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Careers Tab -->
+        <div id="careers-tab" class="tab-pane">
+          <div class="tab-pane-header" style="margin-bottom: 10px;">
+            <h2>নিয়োগ বিজ্ঞপ্তি ব্যবস্থাপনা</h2>
+            <button class="admin-btn admin-btn-primary" id="add-job-btn">
+              <i class="fas fa-plus"></i> নতুন নিয়োগ বিজ্ঞপ্তি
+            </button>
+          </div>
+
+          <div class="admin-table-container" style="margin-bottom: 40px;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>পদের নাম</th>
+                  <th>ডিপার্টমেন্ট</th>
+                  <th>লোকেশন</th>
+                  <th>আবেদনের ডেডলাইন</th>
+                  <th>স্ট্যাটাস</th>
+                  <th>অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="jobs-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tab-pane-header" style="border-top: 1px solid var(--admin-border); padding-top: 30px;">
+            <h2>চাকরির আবেদনসমূহ (CV/Resume Viewer)</h2>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>আবেদনকারীর নাম</th>
+                  <th>যোগাযোগ নম্বর ও ইমেল</th>
+                  <th>আবেদনকৃত পদ</th>
+                  <th style="width: 25%;">কভার লেটার / মেসেজ</th>
+                  <th>তারিখ</th>
+                  <th>রেজুমে / CV</th>
+                </tr>
+              </thead>
+              <tbody id="applications-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Add/Edit Property Modal -->
+  <div id="property-modal" class="admin-modal">
+    <div class="admin-modal-content">
+      <header class="admin-modal-header">
+        <h3 id="property-modal-title">নতুন প্লট লিস্টিং তৈরি করুন</h3>
+        <button class="admin-modal-close" id="property-modal-close"><i class="fas fa-times"></i></button>
+      </header>
+
+      <form id="property-form">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="prop-title">প্লটের নাম (বাংলা) *</label>
+            <input type="text" id="prop-title" class="admin-form-control" placeholder="যেমন: বসতবাড়ী পূর্বাচল রেডি প্লট" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="prop-title-en">প্লটের নাম (ইংরেজি) *</label>
+            <input type="text" id="prop-title-en" class="admin-form-control" placeholder="e.g. Bashatbari Purbachal Ready Plot" required>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="prop-block">ব্লক (Block) *</label>
+              <input type="text" id="prop-block" class="admin-form-control" placeholder="যেমন: Block A" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="prop-size">আকার (কাঠা) *</label>
+              <input type="number" step="0.1" id="prop-size" class="admin-form-control" placeholder="যেমন: 3" required>
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="prop-facing">প্লটের মুখ (Facing) *</label>
+              <select id="prop-facing" class="admin-form-control" required>
+                <option value="North">উত্তরমুখী (North)</option>
+                <option value="South">দক্ষিণমুখী (South)</option>
+                <option value="East">পূর্বমুখী (East)</option>
+                <option value="West">পশ্চিমমুখী (West)</option>
+                <option value="North-East">উত্তর-পূর্বমুখী (North-East)</option>
+                <option value="South-East">দক্ষিণ-পূর্বমুখী (South-East)</option>
+                <option value="North-West">উত্তর-পশ্চিমমুখী (North-West)</option>
+                <option value="South-West">দক্ষিণ-পশ্চিমমুখী (South-West)</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="prop-price">মোট মূল্য (BDT) - আলোচনা সাপেক্ষ হলে ০ দিন</label>
+              <input type="number" id="prop-price" class="admin-form-control" placeholder="যেমন: 4500000">
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="prop-category">ধরণ (Category) *</label>
+              <select id="prop-category" class="admin-form-control" required>
+                <option value="Residential">আবাসিক (Residential)</option>
+                <option value="Commercial">বাণিজ্যিক (Commercial)</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="prop-status">বিক্রয় অবস্থা (Status) *</label>
+              <select id="prop-status" class="admin-form-control" required>
+                <option value="Available">বিক্রয়যোগ্য (Available)</option>
+                <option value="Booked">বুকড (Booked)</option>
+                <option value="Sold">বিক্রীত (Sold)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="prop-image">প্লটের ছবি (URL) *</label>
+            <input type="url" id="prop-image" class="admin-form-control" placeholder="যেমন: https://example.com/image.jpg" required>
+          </div>
+
+          <div class="admin-form-group" style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" id="prop-featured" style="width:18px; height:18px; cursor:pointer;">
+            <label for="prop-featured" style="margin-bottom:0; cursor:pointer;">হোমপেজে স্পেশাল লিস্টিং হিসেবে দেখান (Featured Listing)</label>
+          </div>
+
+          <div class="admin-form-group" style="margin-top: 15px;">
+            <label for="prop-desc">প্লটের বিবরণ / সুবিধা সমূহ</label>
+            <textarea id="prop-desc" class="admin-form-control" rows="3" placeholder="যেমন: নিষ্কণ্টক রেডি প্লট, এখনই বাড়ি করার উপযোগী..."></textarea>
+          </div>
+
+          <div class="admin-form-actions">
+            <button type="button" class="admin-btn" id="btn-cancel-property" style="background-color:#E2E8F0; color:var(--admin-text-dark);">বাতিল</button>
+            <button type="submit" class="admin-btn admin-btn-primary">সংরক্ষণ করুন</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Blog Modal -->
+  <div id="blog-modal" class="admin-modal">
+    <div class="admin-modal-content">
+      <header class="admin-modal-header">
+        <h3 id="blog-modal-title">নতুন ব্লগ তৈরি করুন</h3>
+        <button class="admin-modal-close" id="blog-modal-close"><i class="fas fa-times"></i></button>
+      </header>
+
+      <form id="blog-form">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="blog-title">ব্লগ টাইটেল (Title) *</label>
+            <input type="text" id="blog-title" class="admin-form-control" placeholder="ব্লগ পোস্টের টাইটেল লিখুন" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="blog-image">ব্লগের ছবি (Feature Image URL) *</label>
+            <input type="url" id="blog-image" class="admin-form-control" placeholder="যেমন: https://example.com/blog-img.jpg" required>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="blog-author">লেখক (Author)</label>
+              <input type="text" id="blog-author" class="admin-form-control" placeholder="Admin" value="Admin">
+            </div>
+            <div class="admin-form-group">
+              <label for="blog-tags">ট্যাগসমূহ (Tags - কমা দিয়ে আলাদা করুন)</label>
+              <input type="text" id="blog-tags" class="admin-form-control" placeholder="যেমন: আবাসন, জমি, পূর্বাচল">
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="blog-content">ব্লগের মূল কন্টেন্ট (Content) *</label>
+            <textarea id="blog-content" class="admin-form-control" rows="8" placeholder="ব্লগের বিস্তারিত কন্টেন্ট এখানে লিখুন..." required></textarea>
+          </div>
+
+          <div class="admin-form-actions">
+            <button type="button" class="admin-btn" id="btn-cancel-blog" style="background-color:#E2E8F0; color:var(--admin-text-dark);">বাতিল</button>
+            <button type="submit" class="admin-btn admin-btn-primary">সংরক্ষণ করুন</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Job Modal -->
+  <div id="job-modal" class="admin-modal">
+    <div class="admin-modal-content" style="max-width: 650px;">
+      <header class="admin-modal-header">
+        <h3 id="job-modal-title">নতুন নিয়োগ বিজ্ঞপ্তি তৈরি করুন</h3>
+        <button class="admin-modal-close" id="job-modal-close"><i class="fas fa-times"></i></button>
+      </header>
+
+      <form id="job-form">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="job-title">পদের নাম (Job Title) *</label>
+            <input type="text" id="job-title" class="admin-form-control" placeholder="যেমন: Executive, Sales & Marketing" required>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="job-dept">ডিপার্টমেন্ট (Department) *</label>
+              <input type="text" id="job-dept" class="admin-form-control" placeholder="যেমন: Sales or Accounts" required>
+            </div>
+            <div class="admin-form-group">
+              <label for="job-location">লোকেশন (Location) *</label>
+              <input type="text" id="job-location" class="admin-form-control" placeholder="যেমন: Corporate Office, Dhaka" required>
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="job-deadline">আবেদনের ডেডলাইন (Deadline) *</label>
+              <input type="text" id="job-deadline" class="admin-form-control" placeholder="যেমন: ৩০ জুন, ২০২৬" required>
+            </div>
+            <div class="admin-form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 24px;">
+              <input type="checkbox" id="job-active" style="width: 18px; height: 18px; cursor: pointer;" checked>
+              <label for="job-active" style="margin-bottom: 0; cursor: pointer;">বিজ্ঞপ্তিটি সক্রিয় রয়েছে (Active Status)</label>
+            </div>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="job-desc">পদের বিবরণ ও দায়িত্বসমূহ (Job Description) *</label>
+            <textarea id="job-desc" class="admin-form-control" rows="5" placeholder="পদের দায়িত্বসমূহ লাইনে লাইনে লিখুন..." required></textarea>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="job-reqs">প্রয়োজনীয় যোগ্যতা (Job Requirements) *</label>
+            <textarea id="job-reqs" class="admin-form-control" rows="5" placeholder="যোগ্যতা ও অভিজ্ঞতা সমূহ লিখুন..." required></textarea>
+          </div>
+
+          <div class="admin-form-actions">
+            <button type="button" class="admin-btn" id="btn-cancel-job" style="background-color:#E2E8F0; color:var(--admin-text-dark);">বাতিল</button>
+            <button type="submit" class="admin-btn admin-btn-primary">সংরক্ষণ করুন</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>
