@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>প্রজেক্ট গ্যালারি - বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="বসতবাড়ি পূর্বাচল ডেভেলপমেন্ট লিমিটেড - আমাদের স্বপ্নের আবাসন প্রকল্পের সাম্প্রতিক ছবি, রোড ম্যাপ, লেআউট প্ল্যান এবং নাগরিক সুবিধার ছবি গ্যালারি।">
+  <meta name="keywords" content="বসতবাড়ি গ্যালারি, পূর্বাচল প্রজেক্ট ছবি, প্লট লেআউট ম্যাপ, নাগরিক সুবিধা ম্যাপ">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="https://bashatbari.com/wp-content/uploads/2025/09/cropped-bashatbari-logo-32x32.png" sizes="32x32">
+  
+  <!-- FontAwesome & Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  
+  <style>
+    /* Gallery Custom Styling */
+    .banner-gallery {
+      height: 40vh;
+      background: linear-gradient(180deg, rgba(0, 92, 50, 0.45) 0%, rgba(29, 41, 57, 0.8) 100%), 
+                  url('https://bashatbari.com/wp-content/uploads/2026/04/slider-768x409-1.png') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg-white);
+      text-align: center;
+    }
+    
+    .banner-gallery h1 {
+      font-size: 2.8rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .gallery-intro {
+      max-width: 800px;
+      margin: 0 auto 40px auto;
+      text-align: center;
+    }
+
+    .gallery-intro p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Filters */
+    .gallery-filters {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* Grid Layout */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 25px;
+      margin-bottom: 60px;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-white);
+      cursor: pointer;
+      transition: var(--transition-slow);
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(0, 92, 50, 0.15);
+    }
+
+    .gallery-img-wrapper {
+      height: 240px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition-slow);
+    }
+
+    .gallery-item:hover .gallery-img-wrapper img {
+      transform: scale(1.06);
+    }
+
+    /* Hover Overlay */
+    .gallery-overlay-icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 92, 50, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: var(--transition-normal);
+    }
+
+    .gallery-item:hover .gallery-overlay-icon {
+      opacity: 1;
+    }
+
+    .gallery-overlay-icon i {
+      color: var(--bg-white);
+      font-size: 2rem;
+      transform: scale(0.8);
+      transition: var(--transition-normal);
+    }
+
+    .gallery-item:hover .gallery-overlay-icon i {
+      transform: scale(1);
+    }
+
+    .gallery-caption {
+      padding: 16px 20px;
+    }
+
+    .gallery-caption h3 {
+      font-size: 1.05rem;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gallery-caption span {
+      font-size: 0.85rem;
+      color: var(--primary-color);
+      font-weight: 500;
+    }
+
+    /* Lightbox Modal */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition-normal);
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-content-wrapper {
+      position: relative;
+      max-width: 90%;
+      max-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      border: 3px solid rgba(255,255,255,0.1);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: none;
+      border: none;
+      color: var(--bg-white);
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: var(--transition-fast);
+      z-index: 10000;
+    }
+
+    .lightbox-close:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--bg-white);
+      border: none;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+      z-index: 9999;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.3);
+      scale: 1.05;
+    }
+
+    .lightbox-prev {
+      left: -80px;
+    }
+
+    .lightbox-next {
+      right: -80px;
+    }
+
+    @media (max-width: 768px) {
+      .lightbox-prev { left: 10px; }
+      .lightbox-next { right: 10px; }
+      .lightbox-nav {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+      }
+    }
+
+    .lightbox-info {
+      color: var(--bg-white);
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .lightbox-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .lightbox-category {
+      font-size: 0.9rem;
+      color: var(--accent-gold);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header / Navbar -->
+  <header id="header" class="header scrolled">
+    <div class="container">
+      <div class="nav-pill">
+        <a href="/" class="logo">
+          <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+        </a>
+        
+        <button class="mobile-nav-toggle" id="mobile-toggle" aria-label="Toggle Navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <ul class="nav-menu" id="nav-menu">
+          <li class="nav-item"><a href="/" class="nav-link">হোম</a></li>
+          <li class="nav-item"><a href="/#about" class="nav-link">আমাদের সম্পর্কে</a></li>
+          <li class="nav-item"><a href="/#projects" class="nav-link">চলমান প্রজেক্ট</a></li>
+          <li class="nav-item"><a href="/gallery.html" class="nav-link" style="color: var(--accent-gold);">গ্যালারি</a></li>
+          <li class="nav-item"><a href="/blogs.html" class="nav-link">নিউজ এবং ব্লগস</a></li>
+          <li class="nav-item"><a href="/career.html" class="nav-link">ক্যারিয়ার</a></li>
+          <li class="nav-item"><a href="/#contact" class="nav-link">যোগাযোগ</a></li>
+          <li class="nav-item"><a href="/admin.html" class="nav-link eng-text" style="color: var(--accent-gold); font-weight:600;"><i class="fas fa-user-shield"></i> Portal</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="banner-gallery">
+    <div>
+      <h1>প্রজেক্ট গ্যালারি</h1>
+      <p style="margin-top: 10px; font-size: 1.1rem; opacity:0.9;">বসতবাড়ি পূর্বাচল প্রকল্পের লেআউট ম্যাপ, সুযোগ-সুবিধা এবং উন্নয়ন চিত্র</p>
+    </div>
+  </section>
+
+  <!-- Gallery Content -->
+  <section class="section">
+    <div class="container">
+      
+      <div class="gallery-intro">
+        <span class="section-subtitle">PROJECT VISUALS</span>
+        <h2>বসতবাড়ি প্রকল্প গ্যালারি</h2>
+        <div style="width: 60px; height: 4px; background-color: var(--accent-gold); margin: 12px auto 25px; border-radius: 2px;"></div>
+        <p>রাজউক পূর্বাচল নিউ টাউনের সন্নিকটে গড়ে ওঠা আমাদের দৃষ্টিনন্দন ও আধুনিক আবাসন প্রকল্পের নকশা, রোড ম্যাপ, লেআউট এবং পরিকল্পনাসমূহের চিত্রসমূহ নিচে তুলে ধরা হলো।</p>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="gallery-filters" id="gallery-filters">
+        <button class="filter-btn active" data-filter="all">সকল ছবি</button>
+        <button class="filter-btn" data-filter="roads">প্রজেক্ট রোড ও গেট</button>
+        <button class="filter-btn" data-filter="maps">লেআউট ও নকশা ম্যাপ</button>
+        <button class="filter-btn" data-filter="amenities">নাগরিক সুযোগ-সুবিধা</button>
+      </div>
+
+      <!-- Image Grid -->
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- Rendered dynamically by Javascript -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="https://bashatbari.com/wp-content/uploads/2025/09/bashatbari-logo.png" alt="Bashatbari Logo">
+        <p> আধুনিক ও যুগোপযোগী পরিকল্পিত নগরী গড়ার মহা পরিকল্পনায় nature, technology, security এবং luxury-র সমন্বয়ে গড়ে উঠেছে বসতবাড়ি পূর্বাচল।</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/bibiyahousingltd" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h3>কোম্পানি লিংকস</h3>
+        <ul class="footer-links">
+          <li><a href="/#about">আমাদের সম্পর্কে</a></li>
+          <li><a href="/#projects">চলমান প্রজেক্ট</a></li>
+          <li><a href="/gallery.html">প্রজেক্ট গ্যালারি</a></li>
+          <li><a href="/blogs.html">নিউজ এবং ব্লগস</a></li>
+          <li><a href="/career.html">ক্যারিয়ার</a></li>
+          <li><a href="/#contact">যোগাযোগ করুন</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h3>কাস্টমার সার্ভিসেস</h3>
+        <ul class="footer-contact-info">
+          <li>
+            <i class="fas fa-headset"></i>
+            <span>হটলাইন: +8801962191919</span>
+          </li>
+          <li>
+            <i class="fas fa-envelope-open"></i>
+            <span>ইমেইল: info@bashatbari.com</span>
+          </li>
+          <li>
+            <i class="fas fa-map-marker-alt"></i>
+            <span>নিকুঞ্জ-১, খিলক্ষেত, ঢাকা-১২২৯</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>কপিরাইট © 2026 বসতবাড়ি পূর্বাচল সিটি ডেভেলপমেন্ট লিমিটেড | সমস্ত অধিকার সংরক্ষিত</p>
+    </div>
+  </footer>
+
+  <!-- Fullscreen Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" id="lightbox-close-btn" aria-label="Close lightbox"><i class="fas fa-times"></i></button>
+    
+    <div class="lightbox-content-wrapper">
+      <button class="lightbox-nav lightbox-prev" id="lightbox-prev-btn" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+      <img src="" alt="Full Screen Media" id="lightbox-img" class="lightbox-img">
+      <button class="lightbox-nav lightbox-next" id="lightbox-next-btn" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <div class="lightbox-info">
+      <div class="lightbox-title" id="lightbox-title">Image Title</div>
+      <div class="lightbox-category" id="lightbox-category">Category</div>
+    </div>
+  </div>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Media Items Data
+      const mediaItems = [
+        {
+          title: "বসতবাড়ি মেইন এন্ট্রান্স গেট ডিজাইন",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari.com-front-768x576-1.jpg",
+          category: "roads",
+          categoryName: "প্রজেক্ট রোড ও গেট"
+        },
+        {
+          title: "বসতবাড়ি সিটি প্রধান ফটক (দূরবর্তী দৃশ্য)",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari.com-front01-768x576-1.jpg",
+          category: "roads",
+          categoryName: "প্রজেক্ট রোড ও গেট"
+        },
+        {
+          title: "৬০ ফুট চওড়া প্রজেক্ট এভিনিউ রোড ও লেকভিউ",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari.com-front02-768x346-1.jpg",
+          category: "roads",
+          categoryName: "প্রজেক্ট রোড ও গেট"
+        },
+        {
+          title: "সবুজ বেষ্টনী ও পরিকল্পিত পার্ক এরিয়া",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari.com-front03-768x346-1.jpg",
+          category: "amenities",
+          categoryName: "নাগরিক সুযোগ-সুবিধা"
+        },
+        {
+          title: "প্রাইম কমার্শিয়াল জোন এবং শপিং হাব ডিজাইন",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari.com-front04-768x346-1.jpg",
+          category: "amenities",
+          categoryName: "নাগরিক সুযোগ-সুবিধা"
+        },
+        {
+          title: "পরিকল্পিত রেসিডেন্স ব্লক ভিউ",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari.com-front05-768x346-1.jpg",
+          category: "roads",
+          categoryName: "প্রজেক্ট রোড ও গেট"
+        },
+        {
+          title: "প্রাকৃতিক লেকসাইড ভিউ ও ওয়াকওয়ে",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashat-bari-pic-768x359-1.jpg",
+          category: "amenities",
+          categoryName: "নাগরিক সুযোগ-সুবিধা"
+        },
+        {
+          title: "লেকসাইড পার্ক ও অবসর বিনোদন কেন্দ্র",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/bashatbari-project-image2-768x367-1.png",
+          category: "amenities",
+          categoryName: "নাগরিক সুযোগ-সুবিধা"
+        },
+        {
+          title: "প্রস্তাবিত কেন্দ্রীয় মসজিদ নকশা",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/mosque-768x428-1.png",
+          category: "amenities",
+          categoryName: "নাগরিক সুযোগ-সুবিধা"
+        },
+        {
+          title: "ফায়ার ব্রিগেড ও নিরাপত্তা ভবন নকশা",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/fire-brigade-768x438-1.png",
+          category: "amenities",
+          categoryName: "নাগরিক সুযোগ-সুবিধা"
+        },
+        {
+          title: "বসতবাড়ি সিটি - প্রজেক্ট লেআউট ও ব্লক ম্যাপ ১",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/1-1-768x557-1.jpg",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "বসতবাড়ি সিটি - প্রজেক্ট লেআউট ও ব্লক ম্যাপ ২",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/2-1-768x557-1.jpg",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "প্লট ডিমারকেশন ও সীমানা বাউন্ডারি লেআউট",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/plot-768x378-1.png",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "প্রজেক্ট রোড কানেক্টিভিটি ম্যাপ",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/Screenshot-2025-01-13-111437-768x430-1.png",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "বসতবাড়ি সিটি মাস্টারপ্ল্যান রোড কানেকশনস",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/Screenshot-2025-01-13-131551-768x451-1.png",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "নাগরিক সুযোগ-সুবিধা বন্টন নকশা",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/Screenshot-2025-01-13-132009-768x506-1.png",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "প্রজেক্ট ল্যান্ডস্কেপিং অ্যান্ড জেনস প্ল্যান",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/Screenshot-2025-01-14-170924-768x468-1.png",
+          category: "maps",
+          categoryName: "লেআউট ও নকশা ম্যাপ"
+        },
+        {
+          title: "বসতবাড়ি সিটি স্লাইডার ব্যানার",
+          url: "https://bashatbari.com/wp-content/uploads/2026/04/slider-768x409-1.png",
+          category: "roads",
+          categoryName: "প্রজেক্ট রোড ও গেট"
+        }
+      ];
+
+      let filteredItems = [...mediaItems];
+      let activeIndex = 0;
+
+      const galleryGrid = document.getElementById('gallery-grid');
+      const filterButtons = document.querySelectorAll('#gallery-filters .filter-btn');
+      
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img');
+      const lightboxTitle = document.getElementById('lightbox-title');
+      const lightboxCategory = document.getElementById('lightbox-category');
+      
+      const closeBtn = document.getElementById('lightbox-close-btn');
+      const prevBtn = document.getElementById('lightbox-prev-btn');
+      const nextBtn = document.getElementById('lightbox-next-btn');
+      
+      const mobileToggle = document.getElementById('mobile-toggle');
+      const navMenu = document.getElementById('nav-menu');
+
+      // Mobile navbar
+      if (mobileToggle && navMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navMenu.classList.toggle('active');
+        });
+      }
+
+      // Render Grid Items
+      function renderGallery(items) {
+        galleryGrid.innerHTML = items.map((item, index) => `
+          <div class="gallery-item" onclick="openLightbox(${index})">
+            <div class="gallery-img-wrapper">
+              <img src="${item.url}" alt="${item.title}">
+              <div class="gallery-overlay-icon">
+                <i class="fas fa-expand"></i>
+              </div>
+            </div>
+            <div class="gallery-caption">
+              <h3>${item.title}</h3>
+              <span>${item.categoryName}</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Filter handling
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const category = btn.getAttribute('data-filter');
+          if (category === 'all') {
+            filteredItems = [...mediaItems];
+          } else {
+            filteredItems = mediaItems.filter(item => item.category === category);
+          }
+
+          renderGallery(filteredItems);
+        });
+      });
+
+      // Lightbox Functions
+      window.openLightbox = function(index) {
+        activeIndex = index;
+        updateLightboxContent();
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      };
+
+      function updateLightboxContent() {
+        const item = filteredItems[activeIndex];
+        lightboxImg.src = item.url;
+        lightboxTitle.textContent = item.title;
+        lightboxCategory.textContent = item.categoryName;
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function navigateNext() {
+        activeIndex = (activeIndex + 1) % filteredItems.length;
+        updateLightboxContent();
+      }
+
+      function navigatePrev() {
+        activeIndex = (activeIndex - 1 + filteredItems.length) % filteredItems.length;
+        updateLightboxContent();
+      }
+
+      // Lightbox Event Listeners
+      if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+      if (nextBtn) nextBtn.addEventListener('click', navigateNext);
+      if (prevBtn) prevBtn.addEventListener('click', navigatePrev);
+
+      // Close on clicking overlay
+      if (lightbox) {
+        lightbox.addEventListener('click', (e) => {
+          if (e.target === lightbox || e.target.classList.contains('lightbox-content-wrapper')) {
+            closeLightbox();
+          }
+        });
+      }
+
+      // Keyboard Controls
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') navigateNext();
+        if (e.key === 'ArrowLeft') navigatePrev();
+      });
+
+      // Initial Render
+      renderGallery(filteredItems);
+    });
+  </script>
+</body>
+</html>
