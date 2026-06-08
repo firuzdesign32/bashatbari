@@ -100,6 +100,33 @@ const initialJobs = [
   }
 ];
 
+const initialTeamMembers = [
+  {
+    name: 'Mr. Rishi Kunj Goenka',
+    role: 'Chairman',
+    image: 'https://bashatbari.com/wp-content/uploads/2025/07/Chairman2.jpg',
+    order: 1
+  },
+  {
+    name: 'Captain M Abdul Alim, BN (Rtd)',
+    role: 'Managing Director',
+    image: 'https://bashatbari.com/wp-content/uploads/2025/07/M-Abdul-Alim-1.jpg',
+    order: 2
+  },
+  {
+    name: 'Mr. Tareq Al Mamun',
+    role: 'Director of Operations',
+    image: 'https://bashatbari.com/wp-content/uploads/2025/07/Mr.-Tareq-Al-Mamun.jpg',
+    order: 3
+  },
+  {
+    name: 'Ms. Sultana Parvin',
+    role: 'Director, Admin and HR',
+    image: 'https://bashatbari.com/wp-content/uploads/2025/07/Sultana-parvin-1.jpg',
+    order: 4
+  }
+];
+
 async function seedDatabase() {
   try {
     // 1. Seed Properties
@@ -130,6 +157,16 @@ async function seedDatabase() {
         await dataStore.createJob(job);
       }
       console.log('✅ Successfully seeded initial jobs.');
+    }
+
+    // 4. Seed Team Members
+    const existingTeamMembers = await dataStore.getAllTeamMembers();
+    if (existingTeamMembers.length === 0) {
+      console.log('🌱 Seeding initial team members...');
+      for (const member of initialTeamMembers) {
+        await dataStore.createTeamMember(member);
+      }
+      console.log('✅ Successfully seeded initial team members.');
     }
 
     console.log('ℹ️ Database seeding verification finished.');

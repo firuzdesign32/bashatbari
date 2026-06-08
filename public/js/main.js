@@ -345,7 +345,48 @@ document.addEventListener('DOMContentLoaded', () => {
     formError.style.display = 'block';
   }
 
+  // Fetch Team Members from API
+  async function fetchTeamMembers() {
+    const teamGrid = document.getElementById('team-grid');
+    if (!teamGrid) return;
+    try {
+      teamGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--primary-color);">লোড হচ্ছে...</div>';
+      const response = await fetch('/api/team-members');
+      if (!response.ok) throw new Error('Failed to fetch team members');
+      const members = await response.json();
+      renderTeamMembers(members);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+      teamGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #E53E3E;">ব্যবস্থাপনা পরিষদের তথ্য লোড করতে সমস্যা হয়েছে।</div>';
+    }
+  }
+
+  // Render Team Members
+  function renderTeamMembers(list) {
+    const teamGrid = document.getElementById('team-grid');
+    if (!teamGrid) return;
+    if (list.length === 0) {
+      teamGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">কোনো সদস্য পাওয়া যায়নি।</div>';
+      return;
+    }
+
+    teamGrid.innerHTML = list.map(member => {
+      return `
+        <div class="team-member">
+          <div class="member-img">
+            <img src="${member.image}" alt="${member.name}" loading="lazy">
+          </div>
+          <div class="member-info">
+            <h4 class="member-name">${member.name}</h4>
+            <p class="member-role">${member.role}</p>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
   // Initialize page settings and listings
   fetchSettings();
   fetchProperties();
+  fetchTeamMembers();
 });

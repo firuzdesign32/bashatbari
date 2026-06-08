@@ -77,6 +77,12 @@
             <span>নিয়োগ ও আবেদন</span>
           </a>
         </li>
+        <li class="sidebar-item">
+          <a class="sidebar-link" data-tab="team-tab">
+            <i class="fas fa-users"></i>
+            <span>ব্যবস্থাপনা পরিষদ</span>
+          </a>
+        </li>
       </ul>
 
       <div class="sidebar-footer">
@@ -371,6 +377,33 @@
           </div>
         </div>
 
+        <!-- Team Members Tab -->
+        <div id="team-tab" class="tab-pane">
+          <div class="tab-pane-header">
+            <h2>ব্যবস্থাপনা পরিষদ সদস্যবৃন্দ</h2>
+            <button class="admin-btn admin-btn-primary" id="add-team-btn">
+              <i class="fas fa-plus"></i> নতুন সদস্য যুক্ত করুন
+            </button>
+          </div>
+
+          <div class="admin-table-container">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ছবি</th>
+                  <th>সদস্যের নাম</th>
+                  <th>পদবী / রোল</th>
+                  <th>ক্রম (Order)</th>
+                  <th>অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="team-table-body">
+                <!-- Rendered by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </section>
 
     </main>
@@ -564,6 +597,45 @@
 
           <div class="admin-form-actions">
             <button type="button" class="admin-btn" id="btn-cancel-job" style="background-color:#E2E8F0; color:var(--admin-text-dark);">বাতিল</button>
+            <button type="submit" class="admin-btn admin-btn-primary">সংরক্ষণ করুন</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add/Edit Team Member Modal -->
+  <div id="team-modal" class="admin-modal">
+    <div class="admin-modal-content" style="max-width: 500px;">
+      <header class="admin-modal-header">
+        <h3 id="team-modal-title">নতুন সদস্য যুক্ত করুন</h3>
+        <button class="admin-modal-close" id="team-modal-close"><i class="fas fa-times"></i></button>
+      </header>
+
+      <form id="team-form">
+        <div class="admin-modal-body">
+          <div class="admin-form-group">
+            <label for="team-name">সদস্যের নাম *</label>
+            <input type="text" id="team-name" class="admin-form-control" placeholder="যেমন: মো: সাইফুল ইসলাম" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="team-role">পদবী / রোল *</label>
+            <input type="text" id="team-role" class="admin-form-control" placeholder="যেমন: ম্যানেজিং ডিরেক্টর" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="team-image">সদস্যের ছবি (URL) *</label>
+            <input type="url" id="team-image" class="admin-form-control" placeholder="যেমন: https://example.com/member.jpg" required>
+          </div>
+
+          <div class="admin-form-group">
+            <label for="team-order">ক্রম নম্বর (Display Order) - ছোট থেকে বড় ক্রমে প্রদর্শিত হবে</label>
+            <input type="number" id="team-order" class="admin-form-control" placeholder="যেমন: ১, ২, ৩" value="0">
+          </div>
+
+          <div class="admin-form-actions">
+            <button type="button" class="admin-btn" id="btn-cancel-team" style="background-color:#E2E8F0; color:var(--admin-text-dark);">বাতিল</button>
             <button type="submit" class="admin-btn admin-btn-primary">সংরক্ষণ করুন</button>
           </div>
         </div>

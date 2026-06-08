@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentEditingJobId = null;
   let blogs = [];
   let jobs = [];
+  let currentEditingTeamMemberId = null;
+  let teamMembers = [];
 
   // DOM Elements
   const loginOverlay = document.getElementById('login-overlay');
@@ -55,6 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const jobModalClose = document.getElementById('job-modal-close');
   const btnCancelJob = document.getElementById('btn-cancel-job');
 
+  // Add/Edit Team Modal DOM
+  const teamModal = document.getElementById('team-modal');
+  const teamModalTitle = document.getElementById('team-modal-title');
+  const teamForm = document.getElementById('team-form');
+  const addTeamBtn = document.getElementById('add-team-btn');
+  const teamModalClose = document.getElementById('team-modal-close');
+  const btnCancelTeam = document.getElementById('btn-cancel-team');
+  const teamTableBody = document.getElementById('team-table-body');
+
   // Settings DOM
   const settingsForm = document.getElementById('settings-form');
   const settingsSuccess = document.getElementById('settings-success');
@@ -84,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadBlogs();
     loadJobs();
     loadApplications();
+    loadTeamMembers();
   }
 
   // Handle Login Submission
@@ -873,6 +885,153 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Handle Session Expiration (401 response)
+  function handleSessionExpire() {
+    alert('আপনার লগইন সেশন শেষ হয়ে গেছে। অনুগ্রহ করে আবার লগইন করুন।');
+    localStorage.removeItem('admin_token');
+    token = null;
+    showLogin();
+  }
+
+  // Team CRUD Functions
+  async function loadTeamMembers() {
+    try {
+      const res = await fetch('/api/team-members');
+      if (!res.ok) throw new Error('Failed to fetch team members');
+      teamMembers = await res.json();
+      renderTeamMembersTable(teamMembers);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  function renderTeamMembersTable(list) {
+    if (!teamTableBody) return;
+    if (list.length === 0) {
+      teamTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--admin-text-muted);">কোনো সদস্য পাওয়া যায়নি।</td></tr>';
+      return;
+    }
+
+    teamTableBody.innerHTML = list.map(member => {
+      return `
+        <tr data-id="${member._id || member.id}">
+          <td>
+            <img src="${member.image}" alt="${member.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">
+          </td>
+          <td style="font-weight: 600;">${member.name}</td>
+          <td>${member.role}</td>
+          <td class="eng-text">${member.order || 0}</td>
+          <td>
+            <div class="action-btns">
+              <button class="admin-btn admin-btn-primary admin-btn-sm btn-edit-team" data-id="${member._id || member.id}">সম্পাদনা</button>
+              <button class="admin-btn admin-btn-danger admin-btn-sm btn-delete-team" data-id="${member._id || member.id}">মুছুন</button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.btn-edit-team').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        openEditTeamMemberModal(id);
+      });
+    });
+
+    document.querySelectorAll('.btn-delete-team').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        deleteTeamMember(id);
+      });
+    });
+  }
+
+  if (addTeamBtn) {
+    addTeamBtn.addEventListener('click', () => {
+      currentEditingTeamMemberId = null;
+      teamModalTitle.textContent = 'নতুন সদস্য যুক্ত করুন';
+      teamForm.reset();
+      teamModal.classList.add('active');
+    });
+  }
+
+  function openEditTeamMemberModal(id) {
+    const member = teamMembers.find(m => m._id === id || m.id === id);
+    if (!member) return;
+
+    currentEditingTeamMemberId = member._id || member.id;
+    teamModalTitle.textContent = 'সদস্যের তথ্য সম্পাদনা করুন';
+
+    document.getElementById('team-name').value = member.name;
+    document.getElementById('team-role').value = member.role;
+    document.getElementById('team-image').value = member.image;
+    document.getElementById('team-order').value = member.order || 0;
+
+    teamModal.classList.add('active');
+  }
+
+  function closeTeamMemberModal() {
+    teamModal.classList.remove('active');
+    currentEditingTeamMemberId = null;
+    teamForm.reset();
+  }
+
+  if (teamModalClose) teamModalClose.addEventListener('click', closeTeamMemberModal);
+  if (btnCancelTeam) btnCancelTeam.addEventListener('click', closeTeamMemberModal);
+
+  if (teamForm) {
+    teamForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('team-name').value.trim();
+      const role = document.getElementById('team-role').value.trim();
+      const image = document.getElementById('team-image').value.trim();
+      const order = Number(document.getElementById('team-order').value || 0);
+
+      const payload = { name, role, image, order };
+      const url = currentEditingTeamMemberId ? `/api/team-members/${currentEditingTeamMemberId}` : '/api/team-members';
+      const method = currentEditingTeamMemberId ? 'PUT' : 'POST';
+
+      try {
+        const res = await fetch(url, {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.status === 401) return handleSessionExpire();
+        if (!res.ok) throw new Error('Failed to save team member');
+
+        closeTeamMemberModal();
+        loadTeamMembers();
+      } catch (err) {
+        console.error(err);
+        alert('সদস্য সংরক্ষণ ব্যর্থ হয়েছে।');
+      }
+    });
+  }
+
+  async function deleteTeamMember(id) {
+    if (!confirm('আপনি কি নিশ্চিতভাবে এই সদস্যের তথ্য ডিলিট করতে চান?')) return;
+
+    try {
+      const res = await fetch(`/api/team-members/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (res.status === 401) return handleSessionExpire();
+      if (!res.ok) throw new Error('Failed to delete team member');
+
+      loadTeamMembers();
+    } catch (err) {
+      console.error(err);
+      alert('সদস্য ডিলিট করতে ব্যর্থ হয়েছে।');
+    }
+  }
+
   function handleSessionExpire() {
     alert('আপনার লগইন সেশন শেষ হয়ে গেছে। অনুগ্রহ করে আবার লগইন করুন।');
     localStorage.removeItem('admin_token');

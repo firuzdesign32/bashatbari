@@ -1022,6 +1022,84 @@ textarea.form-control {
   color: rgba(255, 255, 255, 0.5);
 }
 
+/* Managing Director's Speech Section */
+.md-speech {
+  background-color: #eaf5f2; /* Soft premium brand-green tint */
+  position: relative;
+  overflow: hidden;
+}
+
+.md-speech-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.md-speech-card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 92, 50, 0.1);
+  text-align: center;
+  transition: var(--transition-normal);
+}
+
+.md-speech-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.md-speech-img {
+  width: 100%;
+  aspect-ratio: 1 / 1.1; /* slightly taller than square for professional portrait */
+  overflow: hidden;
+  background-color: #e2e8f0;
+}
+
+.md-speech-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.md-speech-meta {
+  padding: 24px 20px;
+}
+
+.md-name {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.md-role {
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.md-speech-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.md-speech-content p {
+  color: var(--text-dark);
+  font-size: 1.1rem;
+  line-height: 1.75;
+  text-align: justify;
+}
+
+.md-speech-content strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
 /* Animations */
 @keyframes fadeInUp {
   from {
@@ -1071,6 +1149,10 @@ textarea.form-control {
   }
   .hero-content h1 {
     font-size: 2.6rem;
+  }
+  .md-speech-grid {
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
   }
 }
 
@@ -1134,5 +1216,17 @@ textarea.form-control {
   }
   .footer-brand {
     grid-column: span 1;
+  }
+  .md-speech-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .md-speech-card {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  .md-speech-content p {
+    text-align: left;
+    font-size: 1.05rem;
   }
 }

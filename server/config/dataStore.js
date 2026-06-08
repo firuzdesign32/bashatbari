@@ -7,6 +7,7 @@ const Settings = require('../models/settings');
 const Blog = require('../models/blog');
 const Job = require('../models/job');
 const Application = require('../models/application');
+const TeamMember = require('../models/teamMember');
 
 // Paths for JSON file fallback
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -16,6 +17,7 @@ const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const BLOGS_FILE = path.join(DATA_DIR, 'blogs.json');
 const JOBS_FILE = path.join(DATA_DIR, 'jobs.json');
 const APPLICATIONS_FILE = path.join(DATA_DIR, 'applications.json');
+const TEAM_MEMBERS_FILE = path.join(DATA_DIR, 'teamMembers.json');
 
 // Ensure directories and files exist for JSON fallback
 function initJsonStore() {
@@ -28,7 +30,8 @@ function initJsonStore() {
     { path: SETTINGS_FILE, default: {} },
     { path: BLOGS_FILE, default: [] },
     { path: JOBS_FILE, default: [] },
-    { path: APPLICATIONS_FILE, default: [] }
+    { path: APPLICATIONS_FILE, default: [] },
+    { path: TEAM_MEMBERS_FILE, default: [] }
   ];
   
   files.forEach(f => {
@@ -401,6 +404,68 @@ module.exports = {
       list.push(newApp);
       writeJson(APPLICATIONS_FILE, list);
       return newApp;
+    }
+  },
+
+  // TeamMembers API
+  async getAllTeamMembers() {
+    if (dbConfig.getIsConnected()) {
+      return await TeamMember.find().sort({ order: 1, createdAt: 1 });
+    } else {
+      const list = readJson(TEAM_MEMBERS_FILE);
+      return list.sort((a, b) => (a.order || 0) - (b.order || 0));
+    }
+  },
+
+  async getTeamMemberById(id) {
+    if (dbConfig.getIsConnected()) {
+      return await TeamMember.findById(id);
+    } else {
+      const list = readJson(TEAM_MEMBERS_FILE);
+      return list.find(m => m._id === id || m.id === id) || null;
+    }
+  },
+
+  async createTeamMember(data) {
+    if (dbConfig.getIsConnected()) {
+      const member = new TeamMember(data);
+      return await member.save();
+    } else {
+      const list = readJson(TEAM_MEMBERS_FILE);
+      const newMember = {
+        _id: 'member_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
+        ...data,
+        createdAt: new Date().toISOString()
+      };
+      list.push(newMember);
+      writeJson(TEAM_MEMBERS_FILE, list);
+      return newMember;
+    }
+  },
+
+  async updateTeamMember(id, data) {
+    if (dbConfig.getIsConnected()) {
+      return await TeamMember.findByIdAndUpdate(id, data, { new: true });
+    } else {
+      const list = readJson(TEAM_MEMBERS_FILE);
+      const index = list.findIndex(m => m._id === id || m.id === id);
+      if (index === -1) return null;
+      list[index] = { ...list[index], ...data };
+      writeJson(TEAM_MEMBERS_FILE, list);
+      return list[index];
+    }
+  },
+
+  async deleteTeamMember(id) {
+    if (dbConfig.getIsConnected()) {
+      return await TeamMember.findByIdAndDelete(id);
+    } else {
+      const list = readJson(TEAM_MEMBERS_FILE);
+      const index = list.findIndex(m => m._id === id || m.id === id);
+      if (index === -1) return null;
+      const deleted = list.splice(index, 1)[0];
+      writeJson(TEAM_MEMBERS_FILE, list);
+      return deleted;
     }
   },
 

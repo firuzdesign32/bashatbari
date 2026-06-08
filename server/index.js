@@ -12,6 +12,7 @@ const settingsRoutes = require('./routes/settings');
 const blogRoutes = require('./routes/blogs');
 const jobRoutes = require('./routes/jobs');
 const applicationRoutes = require('./routes/applications');
+const teamMemberRoutes = require('./routes/teamMembers');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/team-members', teamMemberRoutes);
 
 // Catch-all route to serve the SPA customer homepage
 app.get('/', (req, res) => {
